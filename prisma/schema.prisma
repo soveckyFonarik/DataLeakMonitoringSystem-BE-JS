@@ -1,0 +1,49 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/modules/generated/prisma-client"
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  uniqueLogin String  @unique
+  passwordHash String
+  userPasses UserPass[]
+  alerts    AlertUserServiceList[]
+}
+
+model UserPass {
+  id        Int    @id @default(autoincrement())
+  userId    Int
+  host      String
+  hashPass  String
+  login     String
+  isLeaked  Boolean @default(false)
+  user      User    @relation(fields: [userId], references: [id])
+}
+
+model AlertUserServiceList {
+  alertServiceId Int    @id @default(autoincrement())
+  userId         Int
+  typeServiceId  Int
+  loginServiceId String
+  user           User        @relation(fields: [userId], references: [id])
+  typeService    TypeService @relation(fields: [typeServiceId], references: [id])
+}
+
+model TypeService {
+  id          Int    @id @default(autoincrement())
+  nameService String
+  alerts      AlertUserServiceList[]
+}
+

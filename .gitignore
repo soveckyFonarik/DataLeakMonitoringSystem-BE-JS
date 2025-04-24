@@ -1,7 +1,8 @@
 # compiled output
 /dist
 /node_modules
-
+prisma/dev.db
+src/modules/generated
 # Logs
 logs
 *.log

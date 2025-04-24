@@ -47,15 +47,17 @@
 - Визуализация данных в дашборде.
 
 ## Description
-
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-
+устанавливаем [nodejs](https://nodejs.org/en/download)
 ## Установка зависимостей
 
 ```bash
 $ npm install
 npx prisma generate
 npx prisma migrate dev --name init
+```
+## Заполнение БД тестовыми данными
+```bash
+npm run seed
 ```
 
 ## Запуск приложения

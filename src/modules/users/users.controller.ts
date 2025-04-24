@@ -33,4 +33,10 @@ export class UsersController {
     );
     return userPass;
   }
+
+  @Post('check-leaks/:userId')
+  async checkPasswordLeaks(@Param('userId', ParseIntPipe) userId: number) {
+    await this.usersService.checkPasswordLeaksForUser(userId);
+    return { message: 'Password leaks checked' };
+  }
 }

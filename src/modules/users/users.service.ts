@@ -61,4 +61,17 @@ export class UsersService {
   }
 
   // Другие методы для работы с пользователями
+  async checkPasswordLeaksForUser(userId: number): Promise<void> {
+    const userPasswords = await this.prisma.userPass.findMany({
+      where: { userId },
+    });
+    for (const userPass of userPasswords) {
+      const isLeaked = await this.checkPasswordLeak(userPass.hashPass);
+      await this.prisma.userPass.update({
+        where: { id: userPass.id },
+        data: { isLeaked },
+      });
+      console.warn(`Password for ${userPass.host} is leaked: ${isLeaked}`);
+    }
+  }
 }

@@ -1,10 +1,56 @@
+# Система мониторинга утечек данных
+## этот проект состоит из наборов сервисов, которые взаимодействуют друг с другом.
+### Link (GitHub):
+-  [Главный БЭ сервис](https://github.com/soveckyFonarik/DataLeakMonitoringSystem-BE-JS)  
+- [Фронт](https://github.com/soveckyFonarik/https-github.com-soveckyFonarik-DataLeakMonitoringSystem-FE-JS)
+- [email Util](https://github.com/Kostya777i/email_util) - сервис для уведомления пользователя о утечке данных по почте
 
+## Актуальность
+
+инициализация виртуального окружения
+утечки данных ведут к финансовым потерям, репутационным рискам и кибератакам.
+
+Возможное применение:  коммерческие компании, госучреждения, граждане, которые часто не знают о компрометации своих данных.
+
+Ручной мониторинг неэффективен из-за объема информации в разных сервисах.
+
+## Описание задачи
+
+> Необходимо разработать систему мониторинга утечек конфиденциальной информации в открытых источниках (соцсети, форумы, существующие открытые базы данных утечек). Система должна обнаруживать утечки по ключевым словам, доменам, email-адресам и другим идентификаторам, а также уведомлять пользователей о потенциальных угрозах.
+ ### Цель: 
+ >Создать прототип системы, способной автоматически > находить и анализировать утечки данных.
+
+### Задачи:
+
+- Анализировать открытые источники на предмет утечек.
+
+- Фильтрация и классификация данных.
+
+- Оповещение пользователей (email, Telegram, веб-интерфейс).
+
+- Технический функционал
+
+- Базовый функционал:
+
+- Поиск утечек по ключевым словам: доменам, email, номер телефона, логин.
+
+- Поддержка открытых источников данных
+
+- API для интеграции с другими системами.
+
+- Механизм оповещений (Telegram, email).
+
+#### Дополнительный:
+
+- Анализ критичности (опасность утечки) реализовать возможность ранжирование и установки флагов на те сервисы и порталы учетные данные, которые критичны для пользователя.
+
+- Визуализация данных в дашборде.
 
 ## Description
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
-## Installation
+## Установка зависимостей
 
 ```bash
 $ npm install
@@ -12,7 +58,7 @@ npx prisma generate
 npx prisma migrate dev --name init
 ```
 
-## Running the app
+## Запуск приложения
 
 ```bash
 # development
@@ -37,17 +83,3 @@ $ npm run test:e2e
 # test coverage
 $ npm run test:cov
 ```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).

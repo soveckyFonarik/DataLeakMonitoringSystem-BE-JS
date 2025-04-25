@@ -4,6 +4,7 @@
 -  [Главный БЭ сервис](https://github.com/soveckyFonarik/DataLeakMonitoringSystem-BE-JS)  
 - [Фронт](https://github.com/soveckyFonarik/https-github.com-soveckyFonarik-DataLeakMonitoringSystem-FE-JS)
 - [email Util](https://github.com/Kostya777i/email_util) - сервис для уведомления пользователя о утечке данных по почте
+- [telegram bot](https://github.com/tv1nk9/LeakHunterBot)
 
 ## Актуальность
 

@@ -1,9 +1,12 @@
 import { Module } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service';
+import { PrismaModule } from '../prisma/prisma.module';
 import { LeakCheckService } from './LeakCheckService.service';
 
+import { HttpModule } from '@nestjs/axios';
+
 @Module({
-  providers: [LeakCheckService, PrismaService],
+  imports: [PrismaModule, HttpModule],
+  providers: [LeakCheckService],
   exports: [LeakCheckService],
 })
 export class LeakCheckModule {}

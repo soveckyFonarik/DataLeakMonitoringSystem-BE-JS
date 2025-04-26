@@ -29,6 +29,8 @@ model UserPass {
   login     String
   isLeaked  Boolean @default(false)
   user      User    @relation(fields: [userId], references: [id])
+  isNotified     Boolean     @default(false)
+
 }
 
 model AlertUserServiceList {

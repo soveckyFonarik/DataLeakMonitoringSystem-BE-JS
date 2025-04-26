@@ -3,6 +3,7 @@ import { Cron, CronExpression } from '@nestjs/schedule';
 import { PrismaService } from '../prisma/prisma.service';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
+import { NotificationsService } from '../NotificationsService/NotificationsService.service';
 
 @Injectable()
 export class LeakCheckService {
@@ -14,6 +15,7 @@ export class LeakCheckService {
   constructor(
     private prisma: PrismaService,
     private httpService: HttpService,
+    private notificationsService: NotificationsService,
   ) {}
 
   @Cron(CronExpression.EVERY_10_MINUTES)
@@ -26,23 +28,23 @@ export class LeakCheckService {
     }
   }
 
-  async checkLeaks() {
-    const userPasses = await this.prisma.userPass.findMany();
+  // async checkLeaks() {
+  //   const userPasses = await this.prisma.userPass.findMany();
 
-    for (const pass of userPasses) {
-      const leaked = await this.checkLeakForPass(pass.host, pass.login);
+  //   for (const pass of userPasses) {
+  //     const leaked = await this.checkLeakForPass(pass.host, pass.login);
 
-      if (pass.isLeaked !== leaked) {
-        await this.prisma.userPass.update({
-          where: { id: pass.id },
-          data: { isLeaked: leaked },
-        });
-        this.logger.log(
-          `Пароль id=${pass.id} для host=${pass.host} обновлен: isLeaked=${leaked}`,
-        );
-      }
-    }
-  }
+  //     if (pass.isLeaked !== leaked) {
+  //       await this.prisma.userPass.update({
+  //         where: { id: pass.id },
+  //         data: { isLeaked: leaked },
+  //       });
+  //       this.logger.log(
+  //         `Пароль id=${pass.id} для host=${pass.host} обновлен: isLeaked=${leaked}`,
+  //       );
+  //     }
+  //   }
+  // }
 
   // Проверка утечки через оба API
   private async checkLeakForPass(
@@ -128,6 +130,35 @@ export class LeakCheckService {
     } catch (error) {
       this.logger.error(`Ошибка BreachDirectory для ${login}@${host}:`, error);
       return false;
+    }
+  }
+
+  async checkLeaks() {
+    const userPasses = await this.prisma.userPass.findMany({
+      where: { isLeaked: true, isNotified: false },
+    });
+
+    for (const pass of userPasses) {
+      // Отправляем уведомления
+      const payload = {
+        id: pass.id,
+        host: pass.host,
+        login: pass.login,
+      };
+
+      try {
+        await this.notificationsService.sendToServiceA(payload);
+        await this.notificationsService.sendToServiceB(payload);
+
+        // Помечаем, что уведомление отправлено
+        await this.prisma.userPass.update({
+          where: { id: pass.id },
+          data: { isNotified: true },
+        });
+      } catch (error) {
+        // Логируем ошибку, можно реализовать повторные попытки
+        console.error(`Ошибка уведомления для пароля id=${pass.id}`, error);
+      }
     }
   }
 }
